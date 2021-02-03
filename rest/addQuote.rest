@@ -1,0 +1,16 @@
+POST http://localhost:8080/quotes
+Content-Type: application/json
+
+{
+  "firstName":"JIMI",
+  "lastName": "HENDRIX",
+  "registration": "LAH12ABC",
+  "bodytype": "Hatchback",
+  "marketvalue": "5000",
+  "owner": "Spouse",
+  "othervehicles": 4,
+  "registereddate": "12/4/19",
+  "enginecc": 1500,
+  "manufactureresspec" : "Yes",
+  "accident": "No"
+}

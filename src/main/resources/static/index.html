@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gerard Hackett</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script>
+        function getQuote(event) {
+
+            event.preventDefault();
+
+            //BEFORE WE SUBMIT THE FORM, CHECK THAT ALL FIELDS HAVE BEEN FILLED IN
+            //VALIDATE FIRSTNAME
+            if( event.target.firstName.value == ""||event.target.firstName.value == null ) {
+                alert( "Please provide your first name!" );
+                document.quoteForm.firstName.focus() ;
+                return false;
+            }
+
+            //VALIDATE LASTNAME
+            if( event.target.lastName.value == ""||event.target.lastName.value == null ) {
+                alert( "Please provide your last name!" );
+                document.quoteForm.lastName.focus() ;
+                return false;
+            }
+
+            //VALIDATE REGISTRATION
+            if( event.target.registration.value == ""||event.target.registration.value == null ) {
+                alert( "Please provide your car's registration number!" );
+                document.quoteForm.registration.focus() ;
+                return false;
+            }
+
+            //VALIDATE BODYSTYLE
+            if( event.target.bodystyle.value == ""||event.target.bodystyle.value == null||event.target.bodystyle.value == "Please select a body style" ) {
+                alert( "Please provide your car's body style!" );
+                document.quoteForm.bodystyle.focus() ;
+                return false;
+            }
+
+            //VALIDATE OWNER
+            if( event.target.owner.value == ""||event.target.owner.value == null||event.target.owner.value == "Please select owner"  ) {
+                alert( "Please select the owner of the vehicle!" );
+                document.quoteForm.owner.focus() ;
+                return false;
+            }
+
+            //VALIDATE VEHICLES IN HOUSEHOLD
+            if( event.target.othervehicles.value == ""||event.target.othervehicles.value == null||isNaN(event.target.othervehicles.value))  {
+                alert( "Please select the number of additional cars at the household" );
+                document.quoteForm.othervehicles.focus() ;
+                return false;
+            }
+
+            //VALIDATE DATE REGISTERED
+            if( event.target.dateregistered.value == ""||event.target.dateregistered.value == null ) {
+                alert( "Please select the registration date of the vehicle" );
+                document.quoteForm.dateregistered.focus() ;
+                return false;
+            }
+
+            //VALIDATE MARKET VALUE
+            if( event.target.marketvalue.value == ""||event.target.marketvalue.value == null||isNaN(event.target.marketvalue.value)) {
+                alert( "Please select the current market value" );
+                document.quoteForm.marketvalue.focus() ;
+                return false;
+            }
+
+            //VALIDATE SPEC RADIO BUTTON
+            if( event.target.manufacturersspec.value == ""||event.target.manufacturersspec.value == null ) {
+                alert( "Has hte vehicle been changed from manufacturers specification?" );
+                document.quoteForm.manufacturersspec.focus() ;
+                return false;
+            }
+
+              //VALIDATE ACCIDENTS RADIO BUTTON
+            if( event.target.accidents.value == ""||event.target.accidents.value == null ) {
+                alert( "Has the vehicle been involved in any accidents?" );
+                document.quoteForm.accidents.focus() ;
+                return false;
+            }
+
+
+
+
+            let requestObject = {
+                firstName: event.target.firstName.value,
+                lastName: event.target.lastName.value,
+                registration: event.target.registration.value,
+                bodytype: event.target.bodystyle.value,
+                marketvalue: event.target.marketvalue.value,
+                owner: event.target.owner.value,
+                othervehicles: event.target.othervehicles.value,
+                registereddate: event.target.dateregistered.value,
+                enginecc: event.target.mySlider.value,
+                manufactureresspec: event.target.manufacturersspec.value,
+                accident: event.target.accidents.value,
+
+            };
+            fetch("/quotes", {
+                method: "POST",
+                headers :{
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(requestObject)
+            }).then(function(response) {
+                response.json().then(function (quotation) {
+                    let name = quotation.firstName.toLowerCase();
+                    document.getElementById("successMessage").innerHTML ='Thankyou '+name.charAt(0).toUpperCase() + name.slice(1)+' for your submission, your quotation amount is : £ ' + quotation.quote +'<a href="http://localhost:8080/success.html" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
+
+
+
+                })
+            });
+
+            document.getElementById("successMessage").style.display = "block";
+
+            $('#quoteForm')[0].reset();
+            document.getElementById("successMessage").focus();
+
+
+        }
+    </script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="vendor/nouislider/nouislider.min.css">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="main" style="background-image: url('images/bg-01.jpg'); width:100%; background-size:cover; ;min-height: 947px;">
+    <div class="container">
+        <div class="quotation-content">
+            <div class="quotation-form">
+                <div class="verbiage" style="text-align:center; ">
+                    <img src="images/allstatetransparent.png" alt="">
+                    <div class="alert alert-success" id="successMessage"role="alert">
+
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+
+                    </div>
+                    <h2 id="headerText" style="color:black;padding-bottom:1%">Enter Vehicle Details and get a fast
+                        quotation!</h2>
+
+
+                    <p style="color:black;text-align:justify;padding-left:2%;padding-right:2%;"
+                       id="paragraph2">
+                        In order to help you answer the questions honestly we
+                        have provided help text where possible but we also
+                        offer a free phone number where our agents will be
+                        glad to assist you in filling out the form. If you
+                        have a question call us on
+                        <strong>0888 888 8888</strong> for more information.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <form id="quoteForm" name="quoteForm">
+        <div class="form-row">
+            <div class="form-group">
+                <div class="form-input">
+                    <label for="firstname">
+                        First Name
+                    </label>
+                    <!--style="text-transform: capitalize;"-->
+                    <input type="text"  name="firstName" placeholder="Enter first name" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);" />
+                </div>
+                <div class="form-input">
+                    <label for="lastName">
+                        Last Name
+                    </label>
+                    <input type="text"  name="lastName" placeholder="Enter last name"  oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"/>
+
+                </div>
+                <div class="form-input">
+                    <label for="registration">
+                        Registration
+                    </label>
+                    <input type="text" name="registration" id="vehicleRegistrationNumber" oninput="let p=this.selectionStart;this.value=this.value.toUpperCase();this.setSelectionRange(p, p);"
+                           class="form-control" pattern=[a-zA-Z]{2}[0-9]{2}[a-zA-Z]{3} label="eg:LA51ABC"
+                            placeholder="eg LA51ABC">
+                </div>
+                <div class="form-input">
+                    <label for="bodystyle">
+                        Body Style
+                    </label>
+                    <select name="bodystyle" id="vehicleBodyStyle" class="custom-select mr-sm-2" required>
+                        <option class="hidden_option" selected
+                                disabled> Please select a body style</option>
+                        <option value='Cabriolet (2 door)'>Cabriolet (2 door)</option>
+                        <option value='Cabriolet (4 door)'>Cabriolet (4 door)</option>
+                        <option value='Coupe'>Coupe</option>
+                        <option value='Estate'>Estate</option>
+                        <option value='Hatchback (3 door)'>Hatchback (3 door)</option>
+                        <option value='Hatchback (5 door)'>Hatchback (5 door)</option>
+                        <option value='Saloon'>Saloon</option>
+                    </select>
+                </div>
+                <div class="form-input">
+
+                    <label for="owner">
+                        Owner of vehicle
+                    </label>
+                    <span>
+                        <select name="owner" id="ownerOfVehicle" class="custom-select mr-sm-2" required>
+                            <option class="hidden_option" selected disabled>Please select owner </option>
+                            <option value='Proposer'>Proposer</option>
+                            <option value='Spouse'>Spouse</option>
+                            <option value='Civil'>Civil Partner</option>
+                            <option value='Leased'>Private Lease Company</option>
+                            <option value='Company'>Company</option>
+                            <option value='Other'>Other</option>
+                            </select>
+                    </span>
+                </div>
+
+                <div class="form-input">
+                    <label for="othervehicles">
+                        Number of outher vehicles in the household
+                    </label>
+                    <span>
+                        <select name="othervehicles" id="carsInHousehold" class="custom-select mr-sm-2" required>
+                             <option class="hidden_option" selected
+                                     disabled>Please select amount</option>
+                            <option value='0'>0</option>
+                            <option value='1'>1</option>
+                            <option value='2'>2</option>
+                            <option value='3'>3</option>
+                            <option value='4'>4</option>
+                            <option value='5'>5</option>
+                            <option value='6'>6</option>
+                            <option value='7'>7</option>
+                            <option value='8'>8</option>
+                            <option value='9'>9</option>
+                        </select>
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+                <div class="form-input">
+                    <label for="dateregistered">
+                        Date registered
+                    </label>
+                    <input type="date" class="form-control" id="registeredDate"
+                           name="dateregistered" placeholder="First date of registration"
+                           min="2018-09-18" />
+                </div>
+                <div class="form-input">
+                    <label for="marketvalue">
+                        Current market value of vehicle
+                    </label>
+                    <span>
+                        <select name="marketvalue" id="vehicleValue" class="custom-select mr-sm-2"
+                                required>
+                            <option class="hidden_option" selected disabled>Please select value</option>
+                            <option value='1000'> up to £1000</option>
+                            <option value='2000'>up to £2000 </option>
+                            <option value='5000'>up to £3000</option>
+                            <option value='10000'>up to 10000</option>
+                            <option value='15000'>up to 15000</option>
+                            <option value='20000'>up to 20000</option>
+                            <option value='25000'>up to £25000</option>
+                            <option value='50000'>greater than £25000</option>
+                            </select>
+                    </span>
+                </div>
+
+
+                <div class="form-input">
+                    <div class="engine-cc">
+                        <label class="capacityLabel">Engine Capacity (cc)</label>
+                        <div class="slidecontainer">
+                            <input type="range" min="100" max="1500" value="0" class="slider" id="myRange" name="mySlider">
+                            <p><span id="cclabel" style="color:darkblue;" <="" span="">100</span></p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-input">
+                    <label for="manufacturersspec">
+                        Has the vehicle been changed from manufacterers specification?
+                    </label>
+                    <div class="form-radio-group" id="standardSpecification">
+                        <div class="form-radio-item">
+                            <input name="manufacturersspec" type="radio" id="yes" value="Yes">
+                            <label>Yes</label>
+                            <span class="check"></span>
+                        </div>
+                        <div class="form-radio-item">
+                            <input name="manufacturersspec" type="radio" id="no" value="No">
+                            <label>No</label>
+                            <span class="check"></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-input">
+                    <label for="accidents">
+                        Has the vehicle been involed in any accidents?
+                    </label>
+                    <div class="form-radio-group" id="accidents?">
+
+                        <div class="form-radio-item">
+                            <input type="radio" name="accidents" id="accidentY" value="Yes">
+                            <label>Yes</label>
+                            <span for="yes" class="check"></span>
+
+
+                        </div>
+
+                        <div class="form-radio-item">
+                            <input type="radio" name="accidents" id="accidentN" value="No">
+                            <label>No</label>
+                            <span for="no" class="check"></span>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br/>
+        <input id="GetQuote" type="submit"/>
+        <br/>
+    </form>
+
+</div>
+
+<script>
+    document.getElementById("quoteForm").addEventListener("submit", getQuote);
+</script>
+<!-- JS -->
+<!--<script src="./src/bootstrap-input-spinner.js"></script>-->
+<!--<script>-->
+<!--    $("input[type='number']").inputSpinner()-->
+<!--</script>-->
+
+<script>
+var slider = document.getElementById("myRange");
+var output = document.getElementById("cclabel");
+output.innerHTML = slider.value;
+
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+</script>
+
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
+

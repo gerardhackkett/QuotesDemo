@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <style>
+        div#content{
+             margin-left:18%;
+             margin-top:2%;
+        }
+
+
+        .main{
+            height:796px;
+            min-height:945px!important;
+        }
+
+
+        table#testTable tr:nth-child(even){
+            background-color:lightblue;
+        }
+
+        table#testTable{
+        border:1px solid;
+        }
+
+        thead{
+        background-color: blanchedalmond;
+        }
+
+        input[type="button"]{
+        background-color:lightskyblue;
+        margin-left:0px;
+        width:auto;
+        height:40px;
+        font-size:larger;
+        font-weight:bolder;
+        border-radius:5px;
+
+        }
+
+        tbody{
+         background-color:white;
+        }
+
+     @media screen and (max-width: 1300px) {
+             input[type="button"]{
+
+                }
+
+               div#content{
+                margin-left:10% !important;
+               }
+        }
+
+        @media screen and (max-width: 1190px) {
+             input[type="button"]{
+
+                }
+
+               div#content{
+                margin-left:0% !important;
+               }
+        }
+
+        @media screen and (max-width: 1000px) {
+             input[type="button"]{
+
+                }
+
+               div#content{
+                margin-left:0% !important;
+               }
+        }
+
+
+        @media screen and (max-width: 768px) {
+             input[type="button"]{
+                width:100%;
+                }
+
+               div#content{
+                margin-left:0px !important;
+               }
+        }
+
+         @media screen and (max-width: 500px) {
+             input[type="button"]{
+                width:100%;
+                }
+
+               div#content{
+                margin-left:0px !important;
+               }
+
+               table#testTable{
+               height:150px;
+               }
+
+               .main{
+                height:1200px;
+               }
+        }
+
+
+    </style>
+
+    <script>
+
+        async function populateInvoice() {
+
+            let htmlString="";
+
+            fetch('quotes').then(function(result) {
+                return result.json();
+            }).then(function (quotes) {
+
+                quotes.map((quotation) => {
+                    console.log("Processing a quotation" + quotation.firstName);
+<!--                htmlString+="<div style='background-color:skyblue; width=100%;'>";-->
+<!--                htmlString+=quotation.registration;-->
+<!--                htmlString+="</div>";-->
+
+
+                    htmlString+="<div class='invoiceRow' style='padding-left:24%;'>";
+                    htmlString+="<div class='col-md-12'>";
+                    htmlString+="<div class='panel panel-default'>";
+                    htmlString+=" <div class='panel-heading'>";
+
+                    htmlString+="<div class='panel-body'>";
+                    htmlString+="<div class='table-responsive'>";
+                    htmlString+="<table class='table table-striped'>";
+                    htmlString+="<thead>";
+                    htmlString+="<tr class='warning'>";
+                    htmlString+="<td><strong>Name</strong></td>";
+                    htmlString+="<td class='text-left'><strong>Reg Number</strong></td>";
+                    htmlString+="<td class='text-left'><strong>Car Type</strong></td>";
+                    htmlString+="<td class='text-right'><strong>Quote Amount</strong></td>";
+                    htmlString+="<td class='text-right'><strong>Total</strong></td>";
+                    htmlString+="</thead>";
+                    htmlString+="<tbody>";
+                    htmlString+="<tr class='success'>";
+                    htmlString+="<td>";
+                    htmlString+=quotation.firstName;
+                    htmlString+=" ";
+                    htmlString+=quotation.lastName;
+                    htmlString+="</td>";
+                    htmlString+="<td class='text-left'>";
+                    htmlString+=quotation.registration;
+                    htmlString+="</td>";
+                    htmlString+="<td class='text-left'>";
+                    htmlString+=quotation.bodytype;
+                    htmlString+="</td>";
+                    htmlString+="<td class='text-right'>";
+                    htmlString+=quotation.quote;
+                    htmlString+=".00";
+                    htmlString+="</td>";
+                    htmlString+="<td class='text-right'>";
+                    htmlString+=quotation.quote;
+                    htmlString+=".00";
+                    htmlString+="</td>";
+                    htmlString+="</tr>";
+                    htmlString+="<tr>";
+                    htmlString+="<td class='thick-line'></td>";
+                    htmlString+="<td class='thick-line'></td>";
+                    htmlString+="<td class='thick-line'></td>";
+                    htmlString+="<td class='thick-line text-right'><strong>Subtotal</strong></td>";
+                    htmlString+="<td class='thick-line text-right'>";
+                    htmlString+=quotation.quote
+                    htmlString+=".00";
+                    htmlString+="</td>";
+                    htmlString+="</tr>";
+                    htmlString+="<tr>";
+                    htmlString+="<td class='no-line'></td>";
+                    htmlString+="<td class='no-line'></td>";
+                    htmlString+="<td class='no-line'></td>";
+                    htmlString+="<td class='no-line text-right'><strong>VAT</strong></td>";
+                    htmlString+="<td class='no-line text-right'>17.5%</td>";
+                    htmlString+="</tr>";
+                    htmlString+="<tr>";
+                    htmlString+="<td class='no-line'></td>";
+                    htmlString+="<td class='no-line'></td>";
+                    htmlString+="<td class='no-line'></td>";
+                    htmlString+="<td class='no-line text-right'><strong>Total</strong></td>";
+                    htmlString+="<td class='thick-line text-right'>";
+                    htmlString+="£";
+                    htmlString+=quotation.quote/100*117.5;
+                    htmlString+="0";
+                    htmlString+="</td>";
+                    htmlString+="</tr>";
+                    htmlString+="<td class='no-line'></td>";
+                    htmlString+="<td class='no-line'></td>";
+                    htmlString+="<td class='no-line'></td>";
+                    htmlString+="<td class='no-line'></td>";
+                    htmlString+="<td class='thick-line'></td>";
+                    htmlString+="</tr>";
+                    htmlString+="</tbody>";
+                    htmlString+="</table>";
+                    htmlString+="</div>";
+                    htmlString+="</div>";
+                    htmlString+="</div>";
+                    htmlString+="</div>";
+                    htmlString+="</div>";
+
+
+                });
+
+                document.getElementById("content").innerHTML = htmlString;
+            });
+
+
+        }
+
+    </script>
+
+
+    <meta charset="UTF-8">
+    <title>Invoice</title>
+</head>
+
+<body onLoad="populateInvoice()">
+
+<div class="main" style="background-image: url('images/bg-01.jpg'); width:100%; background-size:cover; min-height:945px !important;">
+    <div class="container" style="min-height:945px !important;">
+        <div class="quotation-content">
+
+
+            <div class="quotation-form">
+                <div class="verbiage" style="text-align:center; ">
+                    <img src="images/allstatetransparent.png" alt="" style="max-width:36%; height:auto;padding-top:5%;padding-bottom:2%;">
+
+
+                    <div class="row" style="background-color:lightgray;width:50%;margin-left:25%;margin-bottom:-13%;border-radius:2pc;padding-left:3px; padding-right:3px;">
+                        <div class="col-xs-12">
+                            <div class="invoice-title" style="text-align:left;padding-top:1%;padding-left:3%;">
+                                <h2>Invoice</h2><h5>Invoice No: 12345</h5>
+                            </div>
+                            <hr>
+                            <div class="row" style="height:110px;">
+                                <div class="col-xs-6-billedTo" style="float:left;text-align:left;">
+                                    <address>
+                                        <strong>Billed To:</strong><br>
+                                        Gerard Hackett<br>
+                                        1234 Any Street<br>
+                                        Any Park<br>
+                                        Belfast, BT1 ANY
+                                    </address>
+                                </div>
+                                <div class="col-xs-6-shippedTo" style="float:right;text-align:left;">
+                                    <address>
+                                        <strong>Shipped To:</strong><br>
+                                        Mr G Hackett<br>
+                                        1234 Central  Street<br>
+                                        Botanic<br>
+                                        Belfast, BT1 9FQ
+                                    </address>
+                                </div>
+                            </div>
+                            <div class="row" style="height:78px;">
+                                <div class="col-xs-6-paymentMethod" style="float:left;text-align:left;">
+                                    <address>
+                                        <strong>Payment Method:</strong><br>
+                                        Visa ending **** 1234<br>
+                                        ghack@email.com
+                                    </address>
+                                </div>
+                                <div class="col-xs-6-orderDate" style="float:right;text-align:left;padding-right:5%;">
+                                    <address>
+                                        <strong>Order Date:</strong><br>
+                                        31-01-2021<br><br>
+                                    </address>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+
+
+                    <div id="content">
+
+                    </div>
+                    <br>
+
+
+                    <button tyle="width:100px">PRINT</button>
+                    <button tyle="width:100px">EMAIL</button>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>
+
+</body>
+</html>

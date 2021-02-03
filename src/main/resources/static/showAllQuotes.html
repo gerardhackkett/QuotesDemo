@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        div#content{
+             margin-left:22%;
+        }
+
+
+        .main{
+            //height:796px;
+            min-height:938px;
+        }
+
+
+        table#testTable tr:nth-child(even){
+            background-color:lightblue;
+        }
+
+        table#testTable{
+        border:1px solid;
+        }
+
+        thead{
+        background-color: blanchedalmond;
+        }
+
+        input[type="button"]{
+        background-color:lightskyblue;
+        margin-left:0px;
+        width:auto;
+        height:40px;
+        font-size:larger;
+        font-weight:bolder;
+        border-radius:5px;
+
+        }
+
+        tbody{
+         background-color:white;
+        }
+
+     @media screen and (max-width: 1300px) {
+             input[type="button"]{
+
+                }
+
+               div#content{
+                margin-left:10% !important;
+               }
+        }
+
+        @media screen and (max-width: 1190px) {
+             input[type="button"]{
+
+                }
+
+               div#content{
+                margin-left:0% !important;
+               }
+        }
+
+        @media screen and (max-width: 1000px) {
+             input[type="button"]{
+
+                }
+
+               div#content{
+                margin-left:0% !important;
+               }
+        }
+
+
+        @media screen and (max-width: 768px) {
+             input[type="button"]{
+                width:100%;
+                }
+
+               div#content{
+                margin-left:0px !important;
+               }
+        }
+
+         @media screen and (max-width: 500px) {
+             input[type="button"]{
+                width:100%;
+                }
+
+               div#content{
+                margin-left:0px !important;
+               }
+
+               table#testTable{
+               height:150px;
+               }
+
+               .main{
+                height:1200px;
+               }
+        }
+
+
+    </style>
+
+    <script>
+
+        async function populateTable() {
+
+            //let htmlString2 = "<table class='testTable2'  summary=\"Code page support in different versions of MS Windows.\" rules=\"groups\" frame=\"hsides\"  style='margin-left:26%;border:1px solid'><thead style='background-color:lightskyblue;'><tr><th>Id</th><th>FirstName</th><th>LastName</th><th>Registration</th><th>BodyType</th><th>MarketValue</th> <th>Owner</th><th>OtherVehicles</th><th>DateRegistered</th><th>EngineCC</th><th>ManufacturersSpec</th><th>Accidents</th><th>Quote</th></tr></thead>";
+            let htmlString = "<table id='testTable' summary=\"Gerard Hackett Quotes.\" rules=\"groups\" frame=\"hsides\" border=\"2\">";
+            htmlString+="<colgroup align='center'></colgroup>";
+            htmlString+="<colgroup align='left'></colgroup>";
+            htmlString+="<colgroup align='left'></colgroup>";
+            htmlString+="<colgroup align='left'></colgroup>";
+            htmlString+="<colgroup align='left'></colgroup>";
+            htmlString+="<colgroup align='left'></colgroup>";
+            htmlString+="<colgroup align='left'></colgroup>";
+            htmlString+="<colgroup align='left'></colgroup>";
+            htmlString+="<colgroup align='left'></colgroup>";
+            htmlString+="<colgroup align='left'></colgroup>";
+            htmlString+="<colgroup align='left'></colgroup>";
+            htmlString+="<colgroup align='left'></colgroup>";
+            htmlString+="<colgroup align='left'></colgroup>";
+            htmlString+="<colgroup align='left'></colgroup>";
+            htmlString+="<colgroup align='left'></colgroup>";
+            htmlString+="<colgroup align='left'></colgroup>";
+            htmlString+="<thead valign='top'>";
+            htmlString+="<tr>";
+            htmlString+="<th>ID</th>";
+            htmlString+="<th>FirstName</th>";
+            htmlString+="<th>LastName</th>";
+            htmlString+="<th>Registration</th>";
+            htmlString+="<th>BodyType</th>";
+            htmlString+="<th>MarketValue</th><th>Owner</th><th>Other Vehicles</th><th>Date Registered</th><th>Engine CC</th><th>Manufacturers Spec</th><th>Accidents</th><th>Quote</th>";
+            htmlString+="</tr>";
+            htmlString+="</thead>";
+
+            fetch('quotes').then(function(result) {
+                return result.json();
+            }).then(function (quotes) {
+
+                quotes.map((quotation) => {
+                    console.log("Processing a quotation" + quotation.firstName);
+
+                    htmlString+="<tbody>";
+                    htmlString+="<tr>";
+                    htmlString+="<td>"+ quotation.id + "</td>";
+                    htmlString+="<td>"+ quotation.firstName + "</td>";
+                    htmlString+="<td>"+ quotation.lastName + "</td><td>"+ quotation.registration + "</td><td>"+ quotation.bodytype + "</td><td>"+"£"+ quotation.marketvalue + "</td><td>"+ quotation.owner + "</td><td>"+ quotation.othervehicles + "</td><td>"+ quotation.registereddate + "</td><td>"+ quotation.enginecc +"cc"+ "</td><td>"+ quotation.manufactureresspec + "</td><td>"+ quotation.accident + "</td><td style=\"background-color: #00f; color: #fff\">"+ "£"+ quotation.quote + "</td>";
+                    htmlString+="</tr>";
+                    htmlString+="</tbody>";
+
+                });
+
+                document.getElementById("content").innerHTML = htmlString;
+            });
+
+
+
+
+
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        var tableToExcel = (function() {
+            var uri = 'data:application/vnd.ms-excel;base64,'
+                , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+                , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+                , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+            return function(table, name) {
+                if (!table.nodeType) table = document.getElementById(table)
+                var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+                window.location.href = uri + base64(format(template, ctx))
+            }
+        })()
+    </script>
+
+    <meta charset="UTF-8">
+    <title>All Quotes</title>
+</head>
+
+<body onLoad="populateTable()">
+
+<div class="main" style="background-image: url('images/bg-01.jpg'); width:100%; background-size:cover;min-height: 938px;">
+    <div class="container">
+        <div class="quotation-content">
+
+
+            <div class="quotation-form">
+                <div class="verbiage" style="text-align:center; ">
+                    <img src="images/allstatetransparent.png" alt="" style="max-width:36%; height:auto;padding-top:5%;">
+
+                    <h2 id="headerText" style="color:black;padding-bottom:1%">
+                        A list of all generated quotes.
+                    </h2>
+
+
+                    <div id="content">
+
+                    </div>
+                    <br>
+                    <input type="button" onclick="tableToExcel('testTable', 'Gerard Hackett Quotes Table')" value="Export to Excel">
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>
+
+</body>
+</html>
